@@ -8,9 +8,9 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-servers:
+servers: # 接口服务器地址，也用于路由声明前缀
   - url: /mock-api/v1
-tags:
+tags:    # 接口文档中的标签名称
   - name: articles
     description: Articles data related api.
   - name: roles
