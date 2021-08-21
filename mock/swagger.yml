@@ -27,9 +27,50 @@ paths:
       tags:
         - players
       operationId: getPlayers # 操作id，必要
+      summary: 获取玩家信息列表
+      description: 返回玩家信息数组
+      parameters:
+        - name: accountname
+          in: query # 参数位于哪里
+          description: 用于过滤的账户名称
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: 用于指定页
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: 分页最大条数
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 30
       responses:
         200:
           description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      list:
+                        type: array
+                        items:
+                          $ref: '#/components/schema/Player'
   /articles:
     get:
       tags:
