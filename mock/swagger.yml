@@ -70,7 +70,7 @@ paths:
                       list:
                         type: array
                         items:
-                          $ref: '#/components/schema/Player'
+                          $ref: '#/components/schemas/Player'
   /articles:
     get:
       tags:
@@ -797,6 +797,15 @@ components:
       required:
         - code
         - message
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        accountname:
+          type: string
+          example: 荆轲
     Article:
       type: object
       properties:
