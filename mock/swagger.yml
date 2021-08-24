@@ -71,6 +71,30 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Player'
+  /players/{id}:
+    get:
+      tags:
+        - players
+      summary: 获取单个玩家信息
+      description: 根据id获取玩家某个信息对象
+      operationId: getPlayer
+      security: # 定义安全选项，保护路由
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 玩家id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /articles:
     get:
       tags:

@@ -52,3 +52,21 @@ export const getPlayers = (req: Request, res: Response) => {
     }
   })
 }
+
+export const getPlayer = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const player of playerList) {
+    if (player.id.toString() === id) {
+      return res.json({
+        code: 2000,
+        data: {
+          player
+        }
+      })
+    }
+  }
+  res.json({
+    code: 70001,
+    message: '没有找到相应玩家'
+  })
+}
