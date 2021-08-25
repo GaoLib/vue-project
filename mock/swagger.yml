@@ -71,6 +71,23 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Player'
+    post:
+      tags:
+        - players
+      operationId: createPlayer
+      summary: 新增玩家信息
+      description: 创建玩家并返回玩家数据
+      parameters:
+        - name: player
+          in: query
+          description: 新建玩家信息
+          schema:
+            $ref: '#/components/schemas/Player'
+      responses:
+        200:
+          description: ok
+        401:
+          $ref: '#/components/responses/Unauthorized'
   /players/{id}:
     get:
       tags:
@@ -91,6 +108,66 @@ paths:
       responses:
         200:
           description: OK
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+       - players
+      summary: 更新玩家信息
+      description: 更新指定id的玩家信息
+      operationId: updatePlayer
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 玩家id
+          schema:
+            type: integer
+            format: int64
+        - name: player
+          in: path
+          required: true
+          description: 要更新的玩家信息
+          schema:
+            $ref: '#/components/schemas/Player'
+      responses:
+        200:
+          description: ok
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - players
+      summary: 删除玩家信息
+      description: 删除指定id的玩家信息
+      operationId: deletePlayer
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 玩家id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
         401:
           $ref: '#/components/responses/Unauthorized'
         404:

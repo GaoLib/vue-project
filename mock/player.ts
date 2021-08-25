@@ -70,3 +70,42 @@ export const getPlayer = (req: Request, res: Response) => {
     message: '没有找到相应玩家'
   })
 }
+
+export const createPlayer = (req: Request, res: Response) => {
+  const { player } = req.body
+
+  res.json({
+    code: 2000,
+    data: {
+      player
+    }
+  })
+}
+
+export const updatePlayer = (req: Request, res: Response) => {
+  const { id } = req.params
+  const { player } = req.body
+
+  for (const player of playerList) {
+    if (player.id.toString() === id) {
+      return res.json({
+        code: 2000,
+        data: {
+          player
+        }
+      })
+    }
+  }
+  res.json({
+    code: 7000,
+    message: '没有找到相应玩家'
+  })
+}
+
+export const deletePlayer = (req: Request, res: Response) => {
+  const { player } = req.body
+
+  res.json({
+    code: 2000
+  })
+}
