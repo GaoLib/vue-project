@@ -7,11 +7,17 @@ const playersRouter: RouteConfig = {
   meta: {
     title: 'playerMgt',
     icon: 'peoples'
-  }
-  // children: [
-  //   {
-  //     path: 'list',
-  //     component: () => import('@/views/player/list.vue')
-  //   }
-  // ]
+  },
+  children: [
+    {
+      path: 'list',
+      component: () => import('@/views/player/list.vue'),
+      meta: {
+        title: 'playerList',
+        icon: 'list'
+      }
+    }
+  ]
 }
+
+export default playersRouter
