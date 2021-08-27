@@ -44,8 +44,8 @@ export const getPlayers = (req: Request, res: Response) => {
 
   const pageList = mockList.filter((item, index) => index < limit * page && index >= Number(limit * (page - 1)))
 
-  res.json({
-    code: 2000,
+  return res.json({
+    code: 20000,
     data: {
       total: pageList.length,
       list: pageList
@@ -58,14 +58,14 @@ export const getPlayer = (req: Request, res: Response) => {
   for (const player of playerList) {
     if (player.id.toString() === id) {
       return res.json({
-        code: 2000,
+        code: 20000,
         data: {
           player
         }
       })
     }
   }
-  res.json({
+  return res.json({
     code: 70001,
     message: '没有找到相应玩家'
   })
@@ -74,8 +74,8 @@ export const getPlayer = (req: Request, res: Response) => {
 export const createPlayer = (req: Request, res: Response) => {
   const { player } = req.body
 
-  res.json({
-    code: 2000,
+  return res.json({
+    code: 20000,
     data: {
       player
     }
@@ -96,7 +96,7 @@ export const updatePlayer = (req: Request, res: Response) => {
       })
     }
   }
-  res.json({
+  return res.json({
     code: 7000,
     message: '没有找到相应玩家'
   })
@@ -105,7 +105,7 @@ export const updatePlayer = (req: Request, res: Response) => {
 export const deletePlayer = (req: Request, res: Response) => {
   const { player } = req.body
 
-  res.json({
+  return res.json({
     code: 2000
   })
 }
