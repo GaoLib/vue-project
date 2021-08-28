@@ -32,22 +32,22 @@ function getWanttoPlay() {
 }
 
 export const getPlayers = (req: Request, res: Response) => {
-  const { reqKeyword, reqPage = 1, reqLimit = 10 } = req.query
+  const { keyword, page = 1, limit = 10 } = req.query
 
-  const page = Number(reqPage)
-  const limit = Number(reqLimit)
-  const keyword = reqKeyword ? reqKeyword + '' : ''
+  const reqPage = Number(page)
+  const reqLimit = Number(limit)
+  const reqKeyword = keyword ? keyword + '' : ''
 
   const mockList = playerList.filter(item => {
-    return !keyword || item.accountname.indexOf(keyword) !== -1
+    return !reqKeyword || item.accountname.indexOf(reqKeyword) !== -1
   })
 
-  const pageList = mockList.filter((item, index) => index < limit * page && index >= Number(limit * (page - 1)))
+  const pageList = mockList.filter((item, index) => index < reqLimit * reqPage && index >= Number(reqLimit * (reqPage - 1)))
 
   return res.json({
     code: 20000,
     data: {
-      total: pageList.length,
+      total: playerList.length,
       list: pageList
     }
   })
