@@ -14,6 +14,14 @@
       >
         过滤
       </el-button>
+
+      <el-button
+        type="success"
+        icon="el-icon-edit"
+        @click="handleCreate"
+      >
+        新增
+      </el-button>
     </div>
 
     <el-table
@@ -81,6 +89,10 @@ export default class List extends Vue {
   handleFilter() {
     this.listQuery.page = 1
     this.getList()
+  }
+
+  handleCreate() {
+    this.$router.push('/players/create')
   }
 }
 </script>
