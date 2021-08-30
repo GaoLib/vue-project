@@ -7,6 +7,18 @@
       <el-form-item prop="nickname" label="昵称">
         <el-input v-model="playerForm.nickname"></el-input>
       </el-form-item>
+
+      <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :before-upload="beforeAvatarUpload"
+        :on-success="handleAvatarSuccess"
+      >
+        <img v-if="imageUrl" src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm">提交</el-button>
       </el-form-item>
@@ -17,6 +29,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { defaultPlayerData, getPlayer, updatePlayer, createPlayer } from '@/api/players'
+import { ElUploadInternalFileDetail, ElUploadInternalRawFile } from 'element-ui/types/upload'
 
 @Component
 export default class PlayerDetail extends Vue {
@@ -26,6 +39,8 @@ export default class PlayerDetail extends Vue {
   playerForm = Object.assign({}, defaultPlayerData)
 
   loading = false
+
+  imageUrl = ''
 
   create() {
     if (this.isEdit) {
@@ -41,6 +56,21 @@ export default class PlayerDetail extends Vue {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  beforeAvatarUpload(file: ElUploadInternalFileDetail) {
+    const isLt1M = file.size / 1024 / 1024 < 1
+
+    if (!isLt1M) {
+      this.$message.error('上传图像大小不能超过1M')
+    }
+    return isLt1M
+  }
+
+  handleAvatarSuccess(resp: any, file: ElUploadInternalFileDetail) {
+    this.imageUrl = URL.createObjectURL(file.raw)
+    // todo avatar从resp中返回
+    this.playerForm.avatar = file.name
   }
 
   async submitForm() {
@@ -65,6 +95,28 @@ export default class PlayerDetail extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 26px;
+  color: #8e939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
