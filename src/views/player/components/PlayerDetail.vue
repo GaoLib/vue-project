@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="playerForm">
+    <el-form ref="form" :model="playerForm" :rules="rules">
       <el-form-item prop="accountname" label="帐户名">
         <el-input v-model="playerForm.accountname"></el-input>
       </el-form-item>
@@ -27,16 +27,38 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
 import { defaultPlayerData, getPlayer, updatePlayer, createPlayer } from '@/api/players'
-import { ElUploadInternalFileDetail, ElUploadInternalRawFile } from 'element-ui/types/upload'
+import { ElUploadInternalFileDetail } from 'element-ui/types/upload'
+import { Form } from 'element-ui'
 
 @Component
 export default class PlayerDetail extends Vue {
   @Prop({ default: false })
   isEdit!: Boolean
 
+  @Ref()
+  form!: Form
+
   playerForm = Object.assign({}, defaultPlayerData)
+
+  validateRequire = (rule: any, value: string, callback: Function) => {
+    if (value === '') {
+      this.$message({
+        message: rule.field + '必须填写',
+        type: 'error'
+      })
+
+      callback(new Error(rule.field + '必须填写'))
+    } else {
+      callback()
+    }
+  }
+
+  rules = {
+    accountname: [{ validator: this.validateRequire }],
+    nickname: [{ validator: this.validateRequire }]
+  }
 
   loading = false
 
@@ -73,24 +95,30 @@ export default class PlayerDetail extends Vue {
     this.playerForm.avatar = file.name
   }
 
-  async submitForm() {
-    this.loading = true
-    try {
-      if (this.isEdit) {
-        await updatePlayer(this.playerForm.id, this.playerForm)
+  submitForm() {
+    this.form.validate(async valid => {
+      if (valid) {
+        this.loading = true
+        try {
+          if (this.isEdit) {
+            await updatePlayer(this.playerForm.id, this.playerForm)
+          } else {
+            await createPlayer(this.playerForm)
+          }
+          this.$notify({
+            title: '操作成功',
+            message: '新增玩家成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.loading = false
+        } catch (error) {
+          console.error(error)
+        }
       } else {
-        await createPlayer(this.playerForm)
+        console.error('校验失败，请修改后再试')
       }
-      this.$notify({
-        title: '操作成功',
-        message: '新增玩家成功',
-        type: 'success',
-        duration: 2000
-      })
-      this.loading = false
-    } catch (error) {
-      console.error(error)
-    }
+    })
   }
 }
 </script>
