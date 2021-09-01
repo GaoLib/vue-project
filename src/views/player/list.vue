@@ -36,6 +36,14 @@
         <template v-slot="{row}">{{ row.id }}</template>
       </el-table-column>
       <el-table-column label="账户名" align="center" prop="accountname" />
+      <el-table-column label="操作" align="center">
+        <template v-slot="scope">
+          <router-link :to="'/players/edit/' + scope.row.id">
+            <el-button type="primary" icon="el-icon-edit">更新</el-button>
+          </router-link>
+          <el-button type="danger" @click="handleDelete(scope)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -50,7 +58,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { getPlayers } from '@/api/players'
+import { getPlayers, deletePlayer } from '@/api/players'
 import { Player } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
@@ -93,6 +101,25 @@ export default class List extends Vue {
 
   handleCreate() {
     this.$router.push('/players/create')
+  }
+
+  handleDelete(scope: any) {
+    const { $index, row } = scope
+    this.$confirm('确定删除玩家信息吗?', '警告', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(async() => {
+      console.log(row.id)
+      await deletePlayer(row.id)
+      this.list.splice($index, 1)
+      this.$message({
+        type: 'success',
+        message: '删除成功！'
+      })
+    }).catch(err => {
+      console.error(err)
+    })
   }
 }
 </script>

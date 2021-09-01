@@ -36,7 +36,13 @@ export const createPlayer = (params: any) =>
 
 export const updatePlayer = (id: number, data: any) =>
   request({
-    url: '/players' + id,
+    url: '/players/' + id,
     method: 'put',
     data
+  })
+
+export const deletePlayer = (id: number) =>
+  request({
+    url: '/players/' + id,
+    method: 'delete'
   })

@@ -24,6 +24,16 @@ const playersRouter: RouteConfig = {
         title: 'createPlayer',
         icon: 'edit'
       }
+    },
+    {
+      path: 'edit/:id(\\d+)',
+      component: () => import('@/views/player/edit.vue'),
+      meta: {
+        title: 'editPlayer',
+        hidden: true,
+        noCache: true, // tags 页签多个，不缓存
+        activeMenu: '/players/list' // 左侧导航激活url
+      }
     }
   ]
 }

@@ -64,7 +64,7 @@ export default class PlayerDetail extends Vue {
 
   imageUrl = ''
 
-  create() {
+  created() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
