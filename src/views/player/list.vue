@@ -110,7 +110,6 @@ export default class List extends Vue {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(async() => {
-      console.log(row.id)
       await deletePlayer(row.id)
       this.list.splice($index, 1)
       this.$message({

@@ -89,7 +89,7 @@ export const updatePlayer = (req: Request, res: Response) => {
   for (const player of playerList) {
     if (player.id.toString() === id) {
       return res.json({
-        code: 2000,
+        code: 20000,
         data: {
           player
         }
@@ -106,6 +106,6 @@ export const deletePlayer = (req: Request, res: Response) => {
   const { player } = req.body
 
   return res.json({
-    code: 2000
+    code: 20000
   })
 }
